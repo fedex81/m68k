@@ -25,7 +25,7 @@ sourceSets {
 
 dependencies {
     implementation 'org.tinylog:tinylog-api:2.6.0'
-    implementation 'org.tinylog:tinylog-impl:2.5.0'
+    implementation 'org.tinylog:tinylog-impl:2.6.0'
     implementation 'org.tinylog:slf4j-tinylog:2.5.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
