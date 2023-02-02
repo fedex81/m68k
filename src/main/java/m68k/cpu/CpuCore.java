@@ -1007,19 +1007,11 @@ public abstract class CpuCore implements Cpu
 	//memory interface
 	public int readMemoryByte(int addr)
 	{
-		return memory.readByte(addr);
-	}
-	public int readMemoryByteSigned(int addr)
-	{
-		return signExtendByte(memory.readByte(addr));
+		return memory.readByte(addr) & 0xFF;
 	}
 	public int readMemoryWord(int addr)
 	{
-		return memory.readWord(addr);
-	}
-	public int readMemoryWordSigned(int addr)
-	{
-		return signExtendWord(memory.readWord(addr));
+		return memory.readWord(addr) & 0xFFFF;
 	}
 	public int readMemoryLong(int addr)
 	{

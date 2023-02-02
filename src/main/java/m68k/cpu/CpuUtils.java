@@ -28,27 +28,11 @@ public final class CpuUtils
 {
 	public static int signExtendByte(int value)
 	{
-		if((value & 0x80) == 0x80)
-		{
-			value |= 0xffffff00;
-		}
-		else
-		{
-			value &= 0x000000ff;
-		}
-		return value;
+		return (byte)value;
 	}
 
 	public static int signExtendWord(int value)
 	{
-		if((value & 0x8000) == 0x8000)
-		{
-			value |= 0xffff0000;
-		}
-		else
-		{
-			value &= 0x0000ffff;
-		}
-		return value;
+		return (short)value;
 	}
 }

@@ -3,6 +3,9 @@ package m68k.cpu;
 import m68k.cpu.operand.Operand;
 import m68k.memory.AddressSpace;
 
+import static m68k.cpu.CpuUtils.signExtendByte;
+import static m68k.cpu.CpuUtils.signExtendWord;
+
 /*
 //  M68k - Java Amiga MachineCore
 //  Copyright (c) 2008-2010, Tony Headford
@@ -80,9 +83,16 @@ public interface Cpu {
 	void setAddrRegisterLong(int reg, int value);
 	//memory interface
 	int readMemoryByte(int addr);
-	int readMemoryByteSigned(int addr);
 	int readMemoryWord(int addr);
-	int readMemoryWordSigned(int addr);
+
+	default int readMemoryByteSigned(int addr)
+	{
+		return signExtendByte(readMemoryByte(addr));
+	}
+	default int readMemoryWordSigned(int addr)
+	{
+		return signExtendWord(readMemoryWord(addr));
+	}
 	int readMemoryLong(int addr);
 	void writeMemoryByte(int addr, int value);
 	void writeMemoryWord(int addr, int value);
