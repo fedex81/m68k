@@ -36,15 +36,15 @@ import java.util.ArrayList;
 */
 public class Monitor implements Runnable
 {
-	private final Cpu cpu;
+	protected final Cpu cpu;
 	private final AddressSpace memory;
-	private boolean running;
+	protected boolean running;
 	private StringBuilder buffer;
-	private BufferedReader reader;
-	private PrintWriter writer;
+	protected BufferedReader reader;
+	protected PrintWriter writer;
 	private boolean showBytes;
 	private boolean autoRegs;
-	private ArrayList<Integer> breakpoints;
+	protected ArrayList<Integer> breakpoints;
 
 	public Monitor(Cpu cpu, AddressSpace memory)
 	{
