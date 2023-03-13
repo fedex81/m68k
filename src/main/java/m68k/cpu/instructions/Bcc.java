@@ -2,6 +2,9 @@ package m68k.cpu.instructions;
 
 import m68k.cpu.*;
 
+import static m68k.cpu.CpuUtils.signExtendByte;
+import static m68k.cpu.CpuUtils.testCC;
+
 /*
 //  M68k - Java Amiga MachineCore
 //  Copyright (c) 2008-2010, Tony Headford
@@ -74,7 +77,7 @@ public class Bcc implements InstructionHandler
 
 	protected final int bxx_byte(int opcode)
 	{
-		int dis = CpuUtils.signExtendByte(opcode & 0xff);
+		int dis = signExtendByte(opcode & 0xff);
 		int cc = (opcode >> 8) & 0x0f;
 		int pc = cpu.getPC();
 		int time;
@@ -88,7 +91,7 @@ public class Bcc implements InstructionHandler
 		}
 		else
 		{
-			if(cpu.testCC(cc))
+			if(testCC(cc, cpu.getSR()))
 			{
 				cpu.setPC(pc + dis);
 				time = 10;
@@ -118,7 +121,7 @@ public class Bcc implements InstructionHandler
 		}
 		else
 		{
-			if(cpu.testCC(cc))
+			if(testCC(cc, cpu.getSR()))
 			{
 				cpu.setPC(pc + dis);
 				time = 10;
@@ -139,7 +142,7 @@ public class Bcc implements InstructionHandler
 		DisassembledOperand op;
 
 		int cc = (opcode >> 8) & 0x0f;
-		int dis = CpuUtils.signExtendByte(opcode & 0xff);
+		int dis = signExtendByte(opcode & 0xff);
 		String name;
 
 		if(dis != 0)

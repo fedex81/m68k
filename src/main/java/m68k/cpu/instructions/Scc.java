@@ -3,6 +3,8 @@ package m68k.cpu.instructions;
 import m68k.cpu.*;
 import m68k.cpu.operand.Operand;
 import m68k.cpu.timing.M68kCycles;
+
+import static m68k.cpu.CpuUtils.testCC;
 /*
 //  M68k - Java Amiga MachineCore
 //  Copyright (c) 2008-2010, Tony Headford
@@ -75,7 +77,7 @@ public class Scc implements InstructionHandler
 		int cc = (opcode >> 8) & 0x0f;
 		int time = 0;
 
-		if(cpu.testCC(cc))
+		if(testCC(cc, cpu.getSR()))
 		{
 			op.setByte(0xff);
 			time = cc != 0 ? 2 : 0; //st doesn't add 2

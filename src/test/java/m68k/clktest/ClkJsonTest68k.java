@@ -65,14 +65,19 @@ public class ClkJsonTest68k {
     public MC68000 provider;
     private TestAddressSpace memory;
 
-//    public static void main(String[] args) {
-//        ClkJsonTest68k t = new ClkJsonTest68k();
-//        fileProvider().forEach(tc -> {
-//            t.setup();
-//            StringBuilder sb = t.testJsonInternal(tc);
-//            System.out.println(sb);
-//        });
-//    }
+    public static void main(String[] args) throws InterruptedException {
+        ClkJsonTest68k t = new ClkJsonTest68k();
+        int cnt = 0;
+        do {
+            System.out.println("Run: " + ++cnt);
+            fileProvider().forEach(tc -> {
+                t.setup();
+                StringBuilder sb = t.testJsonInternal(tc);
+//                System.out.println(sb);
+            });
+            Thread.sleep(500);
+        } while (true);
+    }
 
     @BeforeEach
     public void setup() {
@@ -107,7 +112,7 @@ public class ClkJsonTest68k {
 //        if(!p.toAbsolutePath().getFileName().toString().startsWith("ADD")){
 //            return err;
 //        }
-        System.out.println(p.toAbsolutePath());
+//        System.out.println(p.toAbsolutePath());
         String s = new String(FileUtil.readBinaryFile(p, "json"));
         SingleInstructionRecord[] m = a.fromJson(s, SingleInstructionRecord[].class);
         for (SingleInstructionRecord id : m){

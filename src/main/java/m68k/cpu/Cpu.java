@@ -121,10 +121,8 @@ public interface Cpu {
 	boolean isFlagSet(int flag);
 	void calcFlags(InstructionType type, int s, int d, int r, Size sz);
 	void calcFlagsParam(InstructionType type, int s, int d, int r, int extraParam, Size sz);
-	boolean testCC(int cc);
 	int getOpcode();
 	int getPrefetchWord();
-
 	// stacks
 	int getUSP();
 	void setUSP(int address);

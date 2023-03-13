@@ -2,6 +2,8 @@ package m68k.cpu.instructions;
 
 import m68k.cpu.*;
 
+import static m68k.cpu.CpuUtils.testCC;
+
 /*
 //  M68k - Java Amiga MachineCore
 //  Copyright (c) 2008-2010, Tony Headford
@@ -67,7 +69,7 @@ public class DBcc implements InstructionHandler
 		int time;
 		int count = cpu.getDataRegisterWordSigned(reg) - 1;
 
-		if(cpu.testCC((opcode >> 8) & 0x0f))
+		if(testCC((opcode >> 8) & 0x0f, cpu.getSR()))
 		{
 			// condition met
 			time = 12;
