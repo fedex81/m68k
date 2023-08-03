@@ -1,6 +1,5 @@
 package m68k.util;
 
-import com.google.common.io.ByteStreams;
 import org.slf4j.Logger;
 
 import java.io.Closeable;
@@ -64,7 +63,7 @@ public class ZipUtil {
         byte[] res = new byte[0];
         try (ZipFile zipFile = new ZipFile(path.toFile());
              InputStream is = zipFile.getInputStream(entry)) {
-            res = ByteStreams.toByteArray(is);
+            res = is.readAllBytes();
             LOG.info("Using zipEntry: {}", entry.getName());
         } catch (Exception e) {
             LOG.error("Unable to parse contents {}", path.toAbsolutePath().toString(), e);
@@ -76,7 +75,7 @@ public class ZipUtil {
         byte[] res = new byte[0];
         try (InputStream fis = Files.newInputStream(path);
              InputStream zis = new GZIPInputStream(fis)) {
-            res = ByteStreams.toByteArray(zis);
+            res = zis.readAllBytes();
         } catch (Exception e) {
             LOG.error("Unable to parse contents {}", path.toAbsolutePath().toString(), e);
         }
