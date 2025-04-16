@@ -30,13 +30,13 @@ import m68k.cpu.operand.OperandTiming;
 
 public class DIVU implements InstructionHandler
 {
-	public static boolean ACCURATE_DIV_TIMING;
-
 	protected final Cpu cpu;
+	protected final boolean accurateDivTiming;
 
 	public DIVU(Cpu cpu)
 	{
 		this.cpu = cpu;
+		accurateDivTiming = cpu.getConfig().accurateDivTiming;
 	}
 
 	public void register(InstructionSet is)
@@ -126,7 +126,7 @@ public class DIVU implements InstructionHandler
 				cpu.clrFlags((Cpu.V_FLAG | Cpu.C_FLAG));
 			}
 			//worst case but less than 10% difference between best and worst cases
-			time = ACCURATE_DIV_TIMING ? getDivu68kCycles(dl, s) : 140;
+			time = accurateDivTiming ? getDivu68kCycles(dl, s) : 140;
 		}
 
 		return time + OperandTiming.getOperandTiming(op, Size.Word);

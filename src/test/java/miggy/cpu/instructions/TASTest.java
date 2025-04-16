@@ -1,23 +1,14 @@
 package miggy.cpu.instructions;
 
-import m68k.cpu.instructions.TAS;
 import miggy.BasicSetup;
 import miggy.SystemModel;
 import miggy.SystemModel.CpuFlag;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static m68k.util.TestCpuUtil.*;
 
 // $Revision: 21 $
 public class TASTest extends BasicSetup {
-
-    @Override
-    @BeforeEach
-    protected void setUp() {
-        super.setUp();
-        TAS.EMULATE_BROKEN_TAS = false;
-    }
 
     @Test public void testSet() {
         setInstructionAtPC(0x4ac0);    //tas d0

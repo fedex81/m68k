@@ -33,10 +33,12 @@ import static java.lang.Math.abs;
 public class DIVS implements InstructionHandler
 {
 	protected final Cpu cpu;
+	protected final boolean accurateDivTiming;
 
 	public DIVS(Cpu cpu)
 	{
 		this.cpu = cpu;
+		accurateDivTiming = cpu.getConfig().accurateDivTiming;
 	}
 
 	public void register(InstructionSet is)
@@ -120,7 +122,7 @@ public class DIVS implements InstructionHandler
 				cpu.clrFlags((Cpu.V_FLAG | Cpu.C_FLAG));
 			}
 			//worst case but less than 10% difference between best and worst cases
-			time = DIVU.ACCURATE_DIV_TIMING ? getDivs68kCycles(d, s) : 158;
+			time = accurateDivTiming ? getDivs68kCycles(d, s) : 158;
 		}
 
 		return time + OperandTiming.getOperandTiming(op, Size.Word);

@@ -29,13 +29,13 @@ import m68k.cpu.timing.M68kCycles;
 //
 */
 public class TAS implements InstructionHandler {
-	//EMULATE_BROKEN_TAS -> hardware where write-back to *memory* doesn't work
-	public static boolean EMULATE_BROKEN_TAS;
 
 	protected final Cpu cpu;
+	protected final boolean emulateBrokenTasWrite;
 
 	public TAS(Cpu cpu) {
 		this.cpu = cpu;
+		emulateBrokenTasWrite = cpu.getConfig().emulateBrokenTasWrite;
 	}
 
 	public final void register(InstructionSet is)
@@ -90,7 +90,7 @@ public class TAS implements InstructionHandler {
 		}
 		cpu.clrFlags(Cpu.C_FLAG | Cpu.V_FLAG);
 
-		boolean writeBack = !EMULATE_BROKEN_TAS || (EMULATE_BROKEN_TAS && op.isRegisterMode());
+		boolean writeBack = !emulateBrokenTasWrite || op.isRegisterMode();
 		if (writeBack) {
 			op.setByte(v | 0x80);
 		}

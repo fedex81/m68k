@@ -1,6 +1,8 @@
 package m68k.cpu;
 
 import m68k.cpu.instructions.*;
+import m68k.util.LogHelper;
+import org.slf4j.Logger;
 
 /*
 //  M68k - Java Amiga MachineCore
@@ -28,44 +30,31 @@ import m68k.cpu.instructions.*;
 */
 public class MC68000 extends CpuCore implements InstructionSet
 {
-
-	public static final boolean ENABLE_PREFETCH = Boolean.valueOf(System.getProperty("68k.enable.prefetch", "false"));
-
-	static {
-		initProperties();
-	}
-
-	private static void initProperties() {
-		TAS.EMULATE_BROKEN_TAS = Boolean.valueOf(System.getProperty("68k.broken.tas", "false"));
-		if(TAS.EMULATE_BROKEN_TAS){
-			System.out.println("Emulating broken TAS instruction");
-		}
-		DIVU.ACCURATE_DIV_TIMING = Boolean.valueOf(System.getProperty("68k.accurate.div.timing", "false"));
-		if(DIVU.ACCURATE_DIV_TIMING){
-			System.out.println("Using accurate DIVU/S timing");
-		}
-		if(ENABLE_PREFETCH){
-			System.out.println("Enable prefetch");
-		}
-	}
-
+	private final static Logger LOG = LogHelper.getLogger(MC68000.class.getSimpleName());
 	protected final Instruction[] i_table;
 	protected final Instruction unknown;
 	protected int loaded_ops;
 
-	public MC68000()
-	{
+	protected final CpuConfig cpuConfig;
+
+	public MC68000() {
+		this(CpuConfig.DEFAULT_CONFIG);
+	}
+
+	public MC68000(CpuConfig c){
+		cpuConfig = c;
 		i_table = new Instruction[NUM_OPCODES];
 		unknown = new UNKNOWN(this);
 		for(int i = 0; i < NUM_OPCODES; i++)
 			i_table[i] = unknown;
 		loaded_ops = 0;
 		loadInstructionSet();
+		LOG.info("Using CpuConfig: {}", cpuConfig);
 	}
 
 	@Override
 	public int execute() {
-		if(ENABLE_PREFETCH){
+		if(cpuConfig.enablePrefetch){
 			return executePrefetch();
 		} else {
 			return executeNoPrefetch();
@@ -95,7 +84,7 @@ public class MC68000 extends CpuCore implements InstructionSet
 
 	@Override
 	public int getPrefetchWord(){
-		return ENABLE_PREFETCH ? ir : readMemoryWord(reg_pc);
+		return cpuConfig.enablePrefetch ? ir : readMemoryWord(reg_pc);
 	}
 
 	protected void loadInstructionSet()
@@ -211,5 +200,10 @@ public class MC68000 extends CpuCore implements InstructionSet
 		// read opcode at address
 		int opcode = readMemoryWord(address);
 		return getInstructionFor(opcode);
+	}
+
+	@Override
+	public CpuConfig getConfig() {
+		return cpuConfig;
 	}
 }

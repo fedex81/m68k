@@ -151,4 +151,8 @@ public interface Cpu {
 	Instruction getInstructionFor(int opcode);
 	DisassembledOperand disassembleSrcEA(int address, int mode, int reg, Size sz);
 	DisassembledOperand disassembleDstEA(int address, int mode, int reg, Size sz);
+
+	default CpuConfig getConfig(){
+		return CpuConfig.DEFAULT_CONFIG;
+	}
 }

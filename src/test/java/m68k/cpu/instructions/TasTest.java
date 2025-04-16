@@ -1,6 +1,7 @@
 package m68k.cpu.instructions;
 
 import m68k.cpu.Cpu;
+import m68k.cpu.CpuConfig;
 import m68k.cpu.MC68000;
 import m68k.memory.AddressSpace;
 import m68k.memory.MemorySpace;
@@ -19,12 +20,17 @@ public class TasTest {
 
     AddressSpace bus;
     Cpu cpu;
+    static CpuConfig tasBroken = new CpuConfig(true, false, false);
 
     @BeforeEach public void setUp() {
+        setUp(CpuConfig.DEFAULT_CONFIG);
+    }
+
+    private void setUp(CpuConfig cpuConfig) {
         //create 1kb of memory for the cpu
         bus = new MemorySpace(1);
 
-        cpu = new MC68000();
+        cpu = new MC68000(cpuConfig);
         cpu.setAddressSpace(bus);
         cpu.reset();
         cpu.setAddrRegisterLong(7, 0x200);
@@ -34,7 +40,6 @@ public class TasTest {
     // 0100 1010 1100 0000
     @Test
     public void testTasRegOk() {
-        TAS.EMULATE_BROKEN_TAS = false;
         bus.writeWord(4, 0x4AC0);    //TAS D0
         cpu.setPC(4);
         cpu.setDataRegisterLong(0, 0);
@@ -45,7 +50,7 @@ public class TasTest {
     }
 
     @Test public void testTasRegBroken() {
-        TAS.EMULATE_BROKEN_TAS = true;
+        setUp(tasBroken);
         bus.writeWord(4, 0x4AC0);    //TAS D0
         cpu.setPC(4);
         cpu.setDataRegisterLong(0, 0);
@@ -56,7 +61,6 @@ public class TasTest {
     }
 
     @Test public void testTasMemOk() {
-        TAS.EMULATE_BROKEN_TAS = false;
         int val = 0x20;
         int memAddr = 100;
         bus.writeWord(4, 0x4AD0);    //TAS (A0)
@@ -71,7 +75,7 @@ public class TasTest {
     }
 
     @Test public void testTasMemBroken() {
-        TAS.EMULATE_BROKEN_TAS = true;
+        setUp(tasBroken);
         bus.writeWord(4, 0x4AD0);    //TAS (A0)
         bus.writeByte(100, 0x20);
         cpu.setPC(4);
