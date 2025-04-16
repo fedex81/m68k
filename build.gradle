@@ -29,9 +29,9 @@ dependencies {
     implementation 'org.tinylog:tinylog-impl:2.7.0'
     implementation 'org.tinylog:slf4j-tinylog:2.7.0'
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")
     testImplementation("org.junit.platform:junit-platform-launcher")
-    testImplementation 'com.google.code.gson:gson:2.12.1'
+    testImplementation 'com.google.code.gson:gson:2.13.0'
 }
 
 test {
