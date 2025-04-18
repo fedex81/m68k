@@ -21,7 +21,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/fitreb/m68k-helios"
+            url = "https://maven.pkg.github.com/fedex81/m68k"
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
