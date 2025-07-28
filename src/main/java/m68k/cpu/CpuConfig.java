@@ -8,11 +8,9 @@ import java.util.StringJoiner;
  * Copyright 2025
  */
 public class CpuConfig {
-    public static final CpuConfig DEFAULT_CONFIG = new CpuConfig(false, false, false);
+    public static final CpuConfig DEFAULT_CONFIG = new CpuConfig(false, false, true);
     public final boolean emulateBrokenTasWrite;
     public final boolean accurateDivTiming;
-
-    //TODO not working
     public final boolean enablePrefetch;
 
     public CpuConfig(boolean brokenTas, boolean divTiming, boolean enablePrefetch){
@@ -34,6 +32,10 @@ public class CpuConfig {
 
     public boolean enablePrefetch() {
         return enablePrefetch;
+    }
+
+    public CpuConfig withBrokenTas(boolean brokenTas){
+        return new CpuConfig(brokenTas, accurateDivTiming, enablePrefetch);
     }
 
     @Override

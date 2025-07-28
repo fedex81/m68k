@@ -211,22 +211,22 @@ public abstract class CpuCore implements Cpu
 	}
 	public int fetchPCWord()
 	{
-		int value = readMemoryWord(reg_pc);
+		int res = readMemoryWord(reg_pc);
 		reg_pc += 2;
-		return value;
+		prefetch();
+		return res;
 	}
 
 	public int fetchPCWordSigned()
 	{
-		int value = readMemoryWordSigned(reg_pc);
-		reg_pc += 2;
-		return value;
+		return signExtendWord(fetchPCWord());
 	}
 
 	public int fetchPCLong()
 	{
 		int value = readMemoryLong(reg_pc);
 		reg_pc += 4;
+		prefetch();
 		return value;
 	}
 
@@ -845,6 +845,7 @@ public abstract class CpuCore implements Cpu
 		}
 
 		reg_pc = xaddress;
+		prefetch();
 	}
 
 	public void raiseSRException()
@@ -885,6 +886,7 @@ public abstract class CpuCore implements Cpu
 		}
 
 		reg_pc = xaddress;
+		prefetch();
 	}
 
 

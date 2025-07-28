@@ -39,7 +39,7 @@ public class MC68000Test {
 
     @BeforeEach
     public void setUp() {
-        bus = new MemorySpace(1);    //create 1kb of memory for the cpu
+        bus = new MemorySpace(2);    //create 2kb of memory for the cpu
         cpu = new MC68000();
         cpu.setAddressSpace(bus);
         cpu.reset();
@@ -201,7 +201,7 @@ public class MC68000Test {
     }
 
     @Test public void testException() {
-        bus.writeLong(0x08, 0x56789);
+        bus.writeLong(0x08, 0x567);
         bus.writeLong(0x0c, 0x12345);
         bus.writeLong(0x10, 0x23456);
         cpu.setPC(0x32);
@@ -209,7 +209,7 @@ public class MC68000Test {
         cpu.setAddrRegisterLong(7, 0x0100);
         cpu.setSSP(0x0200);
         cpu.raiseException(2);
-        TestCpuUtil.assertEquals("pc", 0x56789, cpu.getPC());
+        TestCpuUtil.assertEquals("pc", 0x567, cpu.getPC());
         TestCpuUtil.assertEquals("a7", 0x01fa, cpu.getAddrRegisterLong(7)); // 0x0200 - push pc + push sr (6 bytes)
         TestCpuUtil.assertEquals("usp", 0x0100, cpu.getUSP());
         TestCpuUtil.assertTrue("supervisor", cpu.isSupervisorMode());
