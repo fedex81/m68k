@@ -1010,9 +1010,7 @@ public class Operands {
             else
             {
                 // byte & word
-                value = cpu.fetchPCWord();
-                if(sz == Size.Byte)
-                    value &= 0x00ff;
+                value = (int) (cpu.fetchPCWord() & sz.mask());
             }
         }
 

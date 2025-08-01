@@ -68,9 +68,8 @@ public class MC68000 extends CpuCore implements InstructionSet
 		opcode = ir;
 		reg_pc += 2;
 		instruction = i_table[opcode];
-		int res = instruction.execute(opcode);
 		prefetch();
-		return res;
+		return instruction.execute(opcode);
 	}
 
 	private int executeNoPrefetch() {
