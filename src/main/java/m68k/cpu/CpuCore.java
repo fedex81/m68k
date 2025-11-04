@@ -74,9 +74,9 @@ public abstract class CpuCore implements Cpu
 	public void reset()
 	{
 		//NOTE: called during initialization
-		reg_ssp = memory.readLong(0);
+		reg_ssp = memory.readLong(M68kVectors.SSP_0.pos);
 		addr_regs[7] = reg_ssp;
-		reg_pc = memory.readLong(4);
+		reg_pc = memory.readLong(M68kVectors.PC_1.pos);
 		//supervisor mode, interrupts enabled
 		reg_sr = 0x2700;
 		prefetch();
@@ -836,7 +836,8 @@ public abstract class CpuCore implements Cpu
 			//interrupt vector is uninitialised
 			//raise a uninitialised interrupt vector exception instead
 			//vector 15 == 0x003c
-			xaddress = readMemoryLong(0x003c);
+			xaddress = readMemoryLong(M68kVectors.UNINITIALIZED_INTERRUPT_VECTOR_15.pos);
+
 			//if this is zero as well the CPU should halt
 			if(xaddress == 0)
 			{
@@ -851,7 +852,7 @@ public abstract class CpuCore implements Cpu
 	public void raiseSRException()
 	{
 		//always a privilege violation - vector 8
-		int address = 32;
+		int address = M68kVectors.PRIVILEGE_VIOLATION_8.pos;
 
 		//switch to supervisor mode
 		int old_sr = reg_sr;
@@ -877,7 +878,7 @@ public abstract class CpuCore implements Cpu
 			//interrupt vector is uninitialised
 			//raise a uninitialised interrupt vector exception instead
 			//vector 15 == 0x003c
-			xaddress = readMemoryLong(0x003c);
+			xaddress = readMemoryLong(M68kVectors.UNINITIALIZED_INTERRUPT_VECTOR_15.pos);
 			//if this is zero as well the CPU should halt
 			if(xaddress == 0)
 			{
@@ -912,7 +913,7 @@ public abstract class CpuCore implements Cpu
     	if(priority >  getInterruptLevel())
 		{
 			//make it an autovectored interrupt
-			raiseException(priority + 24);
+			raiseException(priority + AUTO_VECTOR_EXCEPTION_OFFSET);
 			setInterruptLevel(priority);
 		}
 	}
