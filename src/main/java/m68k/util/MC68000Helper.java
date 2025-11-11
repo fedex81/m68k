@@ -95,7 +95,7 @@ public class MC68000Helper {
                 cpu.getAddrRegisterLong(4), wrapPc));
         sb.append(String.format("D1: %08x   D5: %08x   A1: %08x   A5: %08x     SR:  %04x %s\n",
                 cpu.getDataRegisterLong(1), cpu.getDataRegisterLong(5), cpu.getAddrRegisterLong(1),
-                cpu.getAddrRegisterLong(5), cpu.getSR(), makeFlagView(cpu)));
+                cpu.getAddrRegisterLong(5), cpu.getSR(), makeFlagView(cpu.getSR())));
         sb.append(String.format("D2: %08x   D6: %08x   A2: %08x   A6: %08x     USP: %08x\n",
                 cpu.getDataRegisterLong(2), cpu.getDataRegisterLong(6), cpu.getAddrRegisterLong(2),
                 cpu.getAddrRegisterLong(6), cpu.getUSP()));
@@ -130,7 +130,7 @@ public class MC68000Helper {
                 "   D5: " + th(state.dr[5]) +
                 "   A1: " + th(state.ar[1]) +
                 "   A5: " + th(state.ar[5]) +
-                "     SR: " + toHex(state.sr, 4) + " " + makeFlagView(cpu) + "\n");
+                "     SR: " + toHex(state.sr, 4) + " " + makeFlagView(cpu.getSR()) + "\n");
         sb.append("D2: " + th(state.dr[2]) +
                 "   D6: " + th(state.dr[6]) +
                 "   A2: " + th(state.ar[2]) +
@@ -168,14 +168,19 @@ public class MC68000Helper {
         return sb.toString();
     }
 
-    protected static String makeFlagView(Cpu cpu) {
+    public static String makeFlagView(int sr) {
         StringBuilder sb = new StringBuilder(5);
-        sb.append(cpu.isFlagSet(16) ? 'X' : '-');
-        sb.append(cpu.isFlagSet(8) ? 'N' : '-');
-        sb.append(cpu.isFlagSet(4) ? 'Z' : '-');
-        sb.append(cpu.isFlagSet(2) ? 'V' : '-');
-        sb.append(cpu.isFlagSet(1) ? 'C' : '-');
+        sb.append((sr & Cpu.X_FLAG) > 0 ? 'X' : '-');
+        sb.append((sr & Cpu.N_FLAG) > 0 ? 'N' : '-');
+        sb.append((sr & Cpu.Z_FLAG) > 0 ? 'Z' : '-');
+        sb.append((sr & Cpu.V_FLAG) > 0 ? 'V' : '-');
+        sb.append((sr & Cpu.C_FLAG) > 0 ? 'C' : '-');
         return sb.toString();
+    }
+
+    @Deprecated
+    public static String makeFlagView(Cpu cpu) {
+        return makeFlagView(cpu.getSR());
     }
 
     public static boolean addToInstructionSet(MC68000 cpu) {
@@ -219,7 +224,7 @@ public class MC68000Helper {
         @Override
         public String toString() {
             return "M68kState{" +
-                    "sr=" + th(sr) +
+                    "sr=" + th(sr) + " (" + makeFlagView(sr) + ")" +
                     ", pc=" + th(pc) +
                     ", ssp=" + th(ssp) +
                     ", usp=" + th(usp) +

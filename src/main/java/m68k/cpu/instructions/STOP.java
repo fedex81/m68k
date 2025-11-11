@@ -43,14 +43,21 @@ public class STOP implements InstructionHandler
 				int data = cpu.fetchPCWord();
 
 				/**
+				 * NOTE - I don't think this is true, why can't it switch to usermode?
+				 * NOTE - SingleStepTests/MAME contradict this
+				 *
 				 * If the bit of the immediate data
 				 * corresponding to the S-bit is clear (i.e., user mode selected),
 				 * execution of the STOP instruction will cause a privilege violation.
+				 * from here:
+				 * http://wpage.unina.it/rcanonic/didattica/ce1/docs/68000.pdf
 				 */
-				if(!cpu.isSupervisorMode() || (data & Cpu.SUPERVISOR_FLAG) == 0)
+				if(!cpu.isSupervisorMode()) // || (data & Cpu.SUPERVISOR_FLAG) == 0)
 				{
+					//pc is pointing to the next word
+					cpu.setPC(cpu.getPC() - 4);
 					// privilege violation
-					cpu.raiseException(8);
+					cpu.raiseException(M68kVectors.PRIVILEGE_VIOLATION_8);
 					return 34;
 				}
 				else

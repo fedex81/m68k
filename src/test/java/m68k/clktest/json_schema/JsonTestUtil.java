@@ -6,6 +6,7 @@ import m68k.cpu.Size;
 import m68k.memory.MemorySpace;
 import m68k.util.MC68000Helper;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static m68k.util.MC68000Helper.th;
@@ -119,4 +120,32 @@ public class JsonTestUtil {
     public static TestAddressSpace createTestAddressSpace(int sizeKb){
         return new TestAddressSpace(sizeKb);
     }
+
+    public static StringBuilder checkMemory(List<List<Long>> finalMem, MemorySpace memory){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < finalMem.size(); i++) {
+            int pos = finalMem.get(i).get(0).intValue();
+            int expVal = finalMem.get(i).get(1).intValue();
+            int actVal = memory.readByte(pos);
+            if(expVal != actVal) {
+                sb.append("Memory mismatch, pos: " + th(pos) + ", Exp: " + th(expVal) + ", Act: " + th(actVal)).append("\n");
+            }
+        }
+        return sb;
+    }
+    public static void writeMemory(List<List<Long>> memoryData, MemorySpace memory){
+        for (int i = 0; i < memoryData.size(); i++) {
+            int addr = memoryData.get(i).get(0).intValue();
+            int data = memoryData.get(i).get(1).intValue();
+            memory.writeByte(addr, data);
+        }
+    }
+
+    public static void eraseMemory(List<List<Long>> memoryData, MemorySpace memory){
+        for (int i = 0; i < memoryData.size(); i++) {
+            int addr = memoryData.get(i).get(0).intValue();
+            memory.writeByte(addr, 0);
+        }
+    }
+
 }

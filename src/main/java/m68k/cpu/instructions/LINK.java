@@ -62,12 +62,10 @@ public class LINK implements InstructionHandler
 		//signed displacement
 		int displacement = cpu.fetchPCWordSigned();
 
-		//quirk with "link A7, #val", decrement and then push
+		//68000: no quirk with "link A7, #val", verified with SingleStepTest/MAME
 		//see https://www.atari-forum.com/viewtopic.php?t=34730&start=25
+		//ie.LINK stacked value is saved before SP was decreased by 4.
 		int addrRegVal = cpu.getAddrRegisterLong(sreg);
-		if(sreg == 7){
-			addrRegVal -= 4;
-		}
 
 		//push the address reg
 		cpu.pushLong(addrRegVal);

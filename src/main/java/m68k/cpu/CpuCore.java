@@ -828,7 +828,7 @@ public abstract class CpuCore implements Cpu
 		//save pc and status regs
 		pushLong(reg_pc);
 		pushWord(old_sr);
-		reg_sr &= ~(TRACE_FLAG);		// exceptions unset the trace flag
+		reg_sr &= ~(TRACE_FLAG_T1|TRACE_FLAG_T0);		// exceptions unset the trace flag
 
 		int xaddress = readMemoryLong(address);
 		if(xaddress == 0)

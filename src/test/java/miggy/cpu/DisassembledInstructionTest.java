@@ -58,10 +58,12 @@ public class DisassembledInstructionTest {
             longFmt.append(b).append("\n");
             shortFmt.append("\n");
             String str = b.toString();
-            assertFalse(Character.isLetterOrDigit(str.charAt(33)));
-            assertFalse(Character.isLetterOrDigit(str.charAt(34)));
-            TestCpuUtil.assertTrue(Character.isLetterOrDigit(str.charAt(35)));
-            TestCpuUtil.assertTrue(Character.isLetterOrDigit(str.charAt(36)));
+            int firstMnemonicInstrLetter = 33;
+            int idx = firstMnemonicInstrLetter;
+            assertFalse("" + str.charAt(idx-2), Character.isLetterOrDigit(str.charAt(idx-2)));
+            assertFalse("" + str.charAt(idx-1), Character.isLetterOrDigit(str.charAt(idx-1)));
+            TestCpuUtil.assertTrue(Character.isLetterOrDigit(str.charAt(idx)));
+            TestCpuUtil.assertTrue(Character.isLetterOrDigit(str.charAt(idx + 1)));
 
         }
         System.out.println(longFmt);

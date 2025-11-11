@@ -102,7 +102,7 @@ public class DisassembledInstruction
 
 	public void formatInstruction(StringBuilder buffer)
 	{
-		buffer.append(String.format("%08x   %04x", address, opcode));
+		buffer.append(String.format("%08x\t%04x", address, opcode));
 		final String instName = String.format("%-9s", instruction);
 
 		switch(num_operands)

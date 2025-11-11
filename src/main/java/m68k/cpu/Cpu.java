@@ -43,7 +43,8 @@ public interface Cpu {
 	int X_FLAG = 1 << X_FLAG_BITS;
 	int INTERRUPT_FLAGS_MASK = 0x0700;
 	int SUPERVISOR_FLAG = 0x2000;
-	int TRACE_FLAG = 0x8000;
+	int TRACE_FLAG_T1 = 0x8000;
+	int TRACE_FLAG_T0 = 0x4000;
 
 	int CCR_MASK = 0x1F;
 	int SR_MASK = 0xE700 | CCR_MASK; //0xe71f
@@ -139,6 +140,10 @@ public interface Cpu {
 	
 	// exceptions & interrupts
 	void raiseException(int vector);
+
+	default void raiseException(M68kVectors vector){
+		raiseException(vector.ordinal());
+	}
 	void raiseSRException();
 	void raiseInterrupt(int priority);
 	int getInterruptLevel();

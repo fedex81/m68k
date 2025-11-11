@@ -50,8 +50,10 @@ public class RTE implements InstructionHandler
 				}
 				else
 				{
+					//pc is pointing to the next word
+					cpu.setPC(cpu.getPC() - 2);
 					// privilege violation
-					cpu.raiseException(8);
+					cpu.raiseException(M68kVectors.PRIVILEGE_VIOLATION_8);
 					return 34;
 				}
 			}

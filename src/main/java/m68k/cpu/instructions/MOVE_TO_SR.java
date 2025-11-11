@@ -69,15 +69,14 @@ public class MOVE_TO_SR implements InstructionHandler
 
 	protected final int move_to_sr(int opcode)
 	{
-		Operand src = cpu.resolveSrcEA((opcode >> 3) & 0x07, opcode & 0x07, Size.Word);
-		int s = src.getWord();
+		//according to SingleStepTests and MAME, srcEa gets evaluated only when in supervisor mode
 		if(!cpu.isSupervisorMode())
 		{
 			cpu.raiseSRException();
 			return 34;
 		}
-                
-		cpu.setSR(s);
+		Operand src = cpu.resolveSrcEA((opcode >> 3) & 0x07, opcode & 0x07, Size.Word);
+		cpu.setSR(src.getWord());
 		return M68kCycles.getTimingByOpcode(opcode);
 	}
 

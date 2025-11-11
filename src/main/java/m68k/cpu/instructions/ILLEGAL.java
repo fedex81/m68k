@@ -41,7 +41,7 @@ public class ILLEGAL implements InstructionHandler
 			public int execute(int opcode)
 			{
 				// vector 4
-				cpu.raiseException(4);
+				cpu.raiseException(M68kVectors.ILLEGAL_INST_4);
 				return 34;
 			}
 			public DisassembledInstruction disassemble(int address, int opcode)

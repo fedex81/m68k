@@ -102,7 +102,7 @@ public class CHK implements InstructionHandler
 		if(raiseException)
 		{
 			// CHK exception is vector 6
-			cpu.raiseException(6);
+			cpu.raiseException(M68kVectors.CHK_INST_6);
 			return 40 + OperandTiming.getOperandTiming(op, Size.Word);
 		}
 

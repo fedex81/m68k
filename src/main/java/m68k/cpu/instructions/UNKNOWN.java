@@ -3,6 +3,7 @@ package m68k.cpu.instructions;
 import m68k.cpu.Cpu;
 import m68k.cpu.DisassembledInstruction;
 import m68k.cpu.Instruction;
+import m68k.cpu.M68kVectors;
 
 /*
 //  M68k - Java Amiga MachineCore
@@ -41,21 +42,21 @@ public class UNKNOWN implements Instruction
 	{
 		cpu.setPC(cpu.getPC() - 2);
 		//illegal instruction
-		int vector;
+		M68kVectors vector;
 		if((opcode & 0xf000) == 0xa000)
 		{
 			//Line 1010 emulator
-			vector = 10;
+			vector = M68kVectors.LINE_A_10;
 		}
 		else if((opcode & 0xf000) == 0xf000)
 		{
 			//Line 1111 emulator
-			vector = 11;
+			vector = M68kVectors.LINE_F_11;
 		}
 		else
 		{
 			//illegal instruction
-			vector = 4;
+			vector = M68kVectors.ILLEGAL_INST_4;
 		}
 
 		cpu.raiseException(vector);

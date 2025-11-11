@@ -53,7 +53,7 @@ public class TRAPV implements InstructionHandler
 	{
 		if(cpu.isFlagSet(Cpu.V_FLAG))
 		{
-			cpu.raiseException(7);
+			cpu.raiseException(M68kVectors.TRAPV_INST_7);
 			return 34;
 		}
 

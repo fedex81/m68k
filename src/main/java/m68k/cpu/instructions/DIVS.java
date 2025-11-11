@@ -85,7 +85,7 @@ public class DIVS implements InstructionHandler
 		if(s == 0)
 		{
 			//divide by zero exception
-			cpu.raiseException(5);
+			cpu.raiseException(M68kVectors.DIV_BY_0_5);
 			time = 38;
 		}
 		else
